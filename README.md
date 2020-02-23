@@ -1,4 +1,5 @@
 This module adds tags to your users based on their groups.
+Uses IRC style prefixes.
 
 To install this module,
 1) copy the grouptag.ini in mumo/modules-available folder
