@@ -161,12 +161,17 @@ class grouptag(MumoModule):
         userstate = server.getState(int(user.session))
 
         if any(x.split(':')[1] in user.name for x in scfg.groupmap):
-          prefix = [x for x in scfg.groupmap if x.split(':')[1] in user.name][0].split(':')[1]
-          prefix = user.name.find(prefix)+len(prefix)
-          original_username = user.name[prefix:]
+            prefix = [x for x in scfg.groupmap if x.split(':')[1] in user.name][0].split(':')[1]
+            prefix = user.name.find(prefix)+len(prefix)
+            original_username = user.name[prefix:]
+        else:
+            original_username = user.name
+
+        if len(tags) > 0:
+            userstate.name='%s%s' % (''.join(tags), original_username)
         else:
             userstate.name='%s' % (original_username)
-
+            
         server.setState(userstate)
         log.info('Setting tags %s to user %s on server %d', tags, original_username, server.id())
 
