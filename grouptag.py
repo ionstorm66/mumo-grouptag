@@ -160,18 +160,23 @@ class grouptag(MumoModule):
 
         userstate = server.getState(int(user.session))
 
-        if user.name.find('[') > 0:
-            original_username = user.name[0:user.name.find('[') -1]
+        if any(x in user.name for x in tags):
+            matches = []
+            for x in tags:
+                if x in user.name and x not in matches:
+                    matches.append(x)
+            original_username = user.name[user.name.find(matches[-1])+1:]
         else:
             original_username = user.name
 
         if len(tags) > 0:
-            userstate.name='%s [ %s ]' % (original_username, ', '.join(tags))
+            userstate.name='%s%s' % (''.join(tags), original_username)
         else:
             userstate.name='%s' % (original_username)
 
         server.setState(userstate)
-        log.info('Setting tags %s to user %s on server %d', tags, user.name, server.id())
+        log.info('Setting tags %s to user %s on server %d', tags, original_username, server.id())
+
     #
     #--- Server callback functions
     #
