@@ -121,6 +121,7 @@ class grouptag(MumoModule):
                             self.updateTags(server, user)
         finally:
             # Renew the timer
+            self.watchdog.cancel()
             self.watchdog = Timer(cfg.grouptag.interval, self.setTag)
             self.watchdog.start()
                         
